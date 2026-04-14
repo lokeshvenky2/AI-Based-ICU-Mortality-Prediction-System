@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Portal | ICU Predict</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+
+    <!-- Sidebar Navigation -->
+    <div class="dash-sidebar d-none d-md-block">
+        <div class="p-4 border-bottom">
+            <a class="navbar-brand d-flex align-items-center fw-bold" href="#">
+                <div class="logo-icon me-2" style="background: #0d9488;">
+                    <i class="fa-solid fa-user-injured text-white"></i>
+                </div>
+                <span class="text-teal">Patient Portal</span>
+            </a>
+        </div>
+        <div class="p-4">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                <a class="nav-link active" id="pat-vitals-tab" href="#"><i class="fa-solid fa-heart-pulse me-2"></i> Vital Signs</a>
+                <a class="nav-link" id="pat-labs-tab" href="#"><i class="fa-solid fa-flask-vial me-2"></i> Lab Reports</a>
+                <a class="nav-link" id="pat-history-tab" href="#"><i class="fa-solid fa-file-medical-alt me-2"></i> Medical History</a>
+                <a class="nav-link" id="pat-team-tab" href="#"><i class="fa-solid fa-user-nurse me-2"></i> My Care Team</a>
+                <a class="nav-link" id="pat-settings-tab" href="#"><i class="fa-solid fa-gear me-2"></i> Settings</a>
+            </div>
+            
+            <div class="mt-5 pt-5">
+                <div class="bg-teal-subtle p-3 rounded-4 mb-3 border border-teal text-center">
+                    <p class="x-small fw-bold text-teal mb-2">URGENT ASSISTANCE</p>
+                    <button class="btn btn-danger w-100 py-2 rounded-3 small fw-bold shadow-sm" id="urgentRoundBtn">
+                        <i class="fa-solid fa-bell me-2"></i> Request Round
+                    </button>
+                </div>
+                <a href="login.html" class="nav-link text-danger mt-4"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="dash-content">
+        
+        <!-- Section: Vital Signs (Default) -->
+        <section id="pat-vitals-section" class="active-section">
+            <header class="d-flex justify-content-between align-items-center mb-5">
+                <div>
+                    <h2 class="fw-bold mb-1">Good morning, John</h2>
+                    <p class="text-muted mb-0">Your ICU recovery progress is steady. Stable vitals detected.</p>
+                </div>
+                <div class="bg-white px-4 py-2 rounded-pill shadow-sm border border-teal-subtle">
+                    <span class="small text-muted me-2">NEXT CLINICAL ROUND:</span>
+                    <span class="fw-bold text-teal" id="nextRoundTime">14:00 PM</span>
+                </div>
+            </header>
+
+            <div class="row g-4 mb-5">
+                <div class="col-md-4">
+                    <div class="p-4 bg-white rounded-4 shadow-sm border-start border-danger border-4 h-100">
+                        <p class="x-small fw-bold text-muted mb-1">HEART RATE</p>
+                        <h2 class="fw-bold text-dark mb-0 d-flex align-items-center">
+                            <span id="patHr">72</span>
+                            <span class="fs-6 opacity-50 ms-2 text-muted fw-normal">BPM</span>
+                            <i class="fa-solid fa-heart-pulse ms-auto text-danger animate-pulse"></i>
+                        </h2>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 bg-white rounded-4 shadow-sm border-start border-primary border-4 h-100">
+                        <p class="x-small fw-bold text-muted mb-1">OXYGEN (SPO2)</p>
+                        <h2 class="fw-bold text-dark mb-0 d-flex align-items-center">
+                            <span id="patSpo2">99</span>
+                            <span class="fs-6 opacity-50 ms-2 text-muted fw-normal">%</span>
+                            <i class="fa-solid fa-droplet ms-auto text-primary"></i>
+                        </h2>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 bg-white rounded-4 shadow-sm border-start border-teal border-4 h-100">
+                        <p class="x-small fw-bold text-muted mb-1">BREATHING RATE</p>
+                        <h2 class="fw-bold text-dark mb-0 d-flex align-items-center">
+                            <span id="patBreath">18</span>
+                            <span class="fs-6 opacity-50 ms-2 text-muted fw-normal">BPM</span>
+                            <i class="fa-solid fa-wind ms-auto text-teal"></i>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="bg-white p-4 rounded-4 shadow-sm h-100 border">
+                        <h6 class="fw-bold mb-4">Clinical Telemetry History</h6>
+                        <div style="height: 350px;">
+                            <canvas id="patientVitalsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="bg-white p-4 rounded-4 shadow-sm h-100 border">
+                        <h6 class="fw-bold mb-4">Recovery Roadmap</h6>
+                        <div class="roadmap-timeline ps-3 border-start">
+                            <div class="roadmap-item mb-4 position-relative">
+                                <div class="roadmap-dot active"></div>
+                                <p class="fw-bold small mb-0">ICU Stabilization</p>
+                                <p class="x-small text-muted mb-0">Completed: Apr 04</p>
+                            </div>
+                            <div class="roadmap-item mb-4 position-relative">
+                                <div class="roadmap-dot active busy"></div>
+                                <p class="fw-bold small mb-0">Observation Period</p>
+                                <p class="x-small text-muted mb-0">Status: 75% Complete</p>
+                            </div>
+                            <div class="roadmap-item opacity-50 position-relative">
+                                <div class="roadmap-dot"></div>
+                                <p class="fw-bold small mb-0">Normal Ward Transfer</p>
+                                <p class="x-small text-muted mb-0">Pending Assessment</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Lab Reports -->
+        <section id="pat-labs-section" class="d-none">
+            <header class="mb-5">
+                <h2 class="fw-bold mb-1">Diagnostic Lab Reports</h2>
+                <p class="text-muted mb-0">Review your institutional laboratory findings and clinical stats.</p>
+            </header>
+            <div class="bg-white p-4 rounded-4 shadow-sm border">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Test Description</th>
+                                <th>Result</th>
+                                <th>Reference Range</th>
+                                <th>Status</th>
+                                <th>Report Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patLabsTableBody">
+                            <!-- Populated by script.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Medical History -->
+        <section id="pat-history-section" class="d-none">
+            <header class="mb-5">
+                <h2 class="fw-bold mb-1">Clinical Journey Timeline</h2>
+                <p class="text-muted mb-0">Longitudinal view of your treatment and stabilization events.</p>
+            </header>
+            <div class="bg-white p-5 rounded-4 shadow-sm border">
+                <div id="patHistoryTimeline">
+                    <!-- Populated by script.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Care Team -->
+        <section id="pat-team-section" class="d-none">
+            <header class="mb-5">
+                <h2 class="fw-bold mb-1">My Clinical Care Team</h2>
+                <p class="text-muted mb-0">Active providers managing your ICU recovery strategy.</p>
+            </header>
+            <div class="row g-4" id="patTeamList">
+                <!-- Populated by script.js -->
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Modals -->
+    <div class="modal fade" id="urgentRoundModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal-body p-5 text-center">
+                    <div class="bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-4 shadow" style="width:70px; height:70px;">
+                        <i class="fa-solid fa-hospital-user fs-2"></i>
+                    </div>
+                    <h3 class="fw-bold mb-2">Request Dispatched</h3>
+                    <p class="text-muted small mb-4">Your request for an urgent clinical round has been sent to the attending intensivist station. A provider will visit you shortly.</p>
+                    <button class="btn btn-dark w-100 py-3 rounded-3" data-bs-dismiss="modal">I Understand</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

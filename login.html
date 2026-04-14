@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | ICU Predict</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="login-body">
+    <div class="container d-flex justify-content-center py-5">
+        <div class="login-card slide-up visible">
+            <!-- Left Side: Brand & Quick Access -->
+            <div class="login-brand-side d-none d-lg-flex">
+                <div class="mb-5">
+                    <div class="logo-icon mb-4" style="width: 64px; height: 64px; font-size: 2rem;">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <h1 class="fw-bold display-5 mb-3">ICU Predict</h1>
+                    <p class="lead opacity-75">Personalized Federated Learning for In-Hospital Mortality Prediction.</p>
+                </div>
+
+                <!-- Quick Access Demo Credentials -->
+                <div class="mt-4 p-4 rounded-4"
+                    style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
+                    <p class="x-small fw-bold text-uppercase mb-3 text-white tracking-wider">
+                        <i class="fa-solid fa-bolt me-1"></i> Quick Access Nodes
+                    </p>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="demo-credential-chip p-2 rounded-3 border border-white-50 cursor-pointer bg-white-10"
+                                data-user="admin" data-role="platform">
+                                <span class="x-small fw-bold text-white">Platform Admin</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="demo-credential-chip p-2 rounded-3 border border-white-50 cursor-pointer bg-white-10"
+                                data-user="hospital" data-role="hospital">
+                                <span class="x-small fw-bold text-white">Hospital Admin</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="demo-credential-chip p-2 rounded-3 border border-white-50 cursor-pointer bg-white-10"
+                                data-user="doctor" data-role="doctor">
+                                <span class="x-small fw-bold text-white">Doctor Node</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="demo-credential-chip p-2 rounded-3 border border-white-50 cursor-pointer bg-white-10"
+                                data-user="user" data-role="user">
+                                <span class="x-small fw-bold text-white">Patient User</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="x-small opacity-75 mt-3 mb-0 text-white"><i class="fa-solid fa-circle-info me-1"></i>
+                        Selection auto-fills clinical node ID.</p>
+                </div>
+            </div>
+
+            <!-- Right Side: Interaction Form -->
+            <div class="login-form-side">
+                <div class="mb-5">
+                    <h2 class="fw-bold">Welcome Back</h2>
+                    <p class="text-muted">Enter your credentials to access the platform</p>
+                </div>
+
+                <form id="loginForm">
+                    <div id="loginError" class="alert alert-danger d-none mb-4 small"></div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-muted small fw-bold text-uppercase mb-3">Select Your Role</label>
+                        <div class="d-flex flex-wrap gap-2 role-selector">
+                            <input type="radio" class="btn-check" name="userRole" id="role-platform" value="platform"
+                                checked>
+                            <label class="btn btn-outline-teal btn-sm px-3 py-2 rounded-pill"
+                                for="role-platform">Platform</label>
+
+                            <input type="radio" class="btn-check" name="userRole" id="role-hospital" value="hospital">
+                            <label class="btn btn-outline-teal btn-sm px-3 py-2 rounded-pill"
+                                for="role-hospital">Hospital Admin</label>
+
+                            <input type="radio" class="btn-check" name="userRole" id="role-doctor" value="doctor">
+                            <label class="btn btn-outline-teal btn-sm px-3 py-2 rounded-pill"
+                                for="role-doctor">Doctor</label>
+
+                            <input type="radio" class="btn-check" name="userRole" id="role-user" value="user">
+                            <label class="btn btn-outline-teal btn-sm px-3 py-2 rounded-pill"
+                                for="role-user">User</label>
+                        </div>
+                    </div>
+
+                    <!-- Inputs -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i
+                                    class="fa-solid fa-user text-muted"></i></span>
+                            <input type="text" id="username" class="form-control border-start-0 ps-0"
+                                placeholder="Enter username" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i
+                                    class="fa-solid fa-lock text-muted"></i></span>
+                            <input type="password" id="password" class="form-control border-start-0 ps-0"
+                                placeholder="Enter password" required>
+                        </div>
+                    </div>
+
+                    <!-- Remember & Forgot -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="rememberMe">
+                            <label class="form-check-label small" for="rememberMe">Remember me</label>
+                        </div>
+                        <a href="#" class="small text-teal fw-semibold" data-bs-toggle="modal"
+                            data-bs-target="#forgotPasswordModal">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-teal-primary w-100 py-3 mb-4 rounded-3">
+                        Sign In <i class="fa-solid fa-arrow-right ms-2 mt-1"></i>
+                    </button>
+                </form>
+
+                <div class="text-center mt-5">
+                    <p class="small text-muted">New to ICU Predict? <a href="#" class="text-teal fw-bold"
+                            data-bs-toggle="modal" data-bs-target="#signupModal">Create Institutional Account</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header border-0 bg-teal text-white rounded-top-4">
+                    <h5 class="fw-bold mb-0">Create Private Account</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="signupForm">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">USERNAME</label>
+                            <input type="text" id="reg-username" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">TEMPORARY PASSWORD</label>
+                            <input type="password" id="reg-password" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">ROLE</label>
+                            <select id="reg-role" class="form-select">
+                                <option value="doctor">Doctor / Clinician</option>
+                                <option value="user" selected>Patient / User</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold">AFFILIATE INSTITUTION</label>
+                            <input type="text" id="reg-institution" class="form-control" placeholder="e.g. Mayo Clinic">
+                        </div>
+                        <button type="submit" class="btn btn-teal-primary w-100 py-3 rounded-3">Request
+                            Provisioning</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0">
+                <div class="modal-body p-5">
+                    <div id="recoverySuccess" class="text-center d-none">
+                        <div class="bg-success-subtle text-success mx-auto mb-4 rounded-circle d-flex align-items-center justify-content-center"
+                            style="width:64px; height:64px; font-size: 1.5rem;">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <h4 class="fw-bold mb-2">Instructions Sent!</h4>
+                        <p class="text-muted small">Please check your registered institutional email for recovery
+                            instructions.</p>
+                        <button class="btn btn-teal-primary w-100 py-2 mt-3" data-bs-dismiss="modal">Back to
+                            Login</button>
+                    </div>
+
+                    <form id="forgotPasswordForm">
+                        <h4 class="fw-bold mb-2">Account Recovery</h4>
+                        <p class="text-muted small mb-4">Enter your institutional email or username to receive recovery
+                            instructions.</p>
+                        <div class="mb-4">
+                            <input type="text" class="form-control py-3" placeholder="Institutional ID / Email"
+                                required>
+                        </div>
+                        <button type="submit" class="btn btn-teal-primary w-100 py-3">Send Recovery Link</button>
+                        <button type="button" class="btn btn-light w-100 py-3 mt-2"
+                            data-bs-dismiss="modal">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js?v=4.0"></script>
+</body>
+
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platform Admin | ICU Predict</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+
+    <!-- Sidebar Navigation -->
+    <div class="dash-sidebar d-none d-md-block">
+        <div class="p-4 border-bottom">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <div class="logo-icon me-2">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <span class="fw-bold">Platform Admin</span>
+            </a>
+        </div>
+        <div class="p-4">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+                <a class="nav-link active" id="v-pills-home-tab" href="platform-dash.html"><i class="fa-solid fa-house me-2"></i> Dashboard</a>
+                <a class="nav-link" id="v-pills-hospitals-tab" href="#"><i class="fa-solid fa-hospital me-2"></i> Hospital Networks</a>
+                <a class="nav-link" id="v-pills-training-tab" href="#"><i class="fa-solid fa-brain me-2"></i> Model Training</a>
+                <a class="nav-link" id="v-pills-analytics-tab" href="#"><i class="fa-solid fa-chart-pie me-2"></i> Analytics</a>
+                <a class="nav-link" id="v-pills-settings-tab" href="#"><i class="fa-solid fa-gear me-2"></i> System Settings</a>
+            </div>
+            
+            <div class="mt-5 pt-5">
+                <div class="bg-teal-subtle p-3 rounded-4 mb-4">
+                    <p class="x-small fw-bold text-teal mb-2">PLATFORM STATUS</p>
+                    <div class="d-flex align-items-center mb-1">
+                        <div class="pulse-dot me-2"></div>
+                        <span class="small fw-semibold">All Systems Normal</span>
+                    </div>
+                </div>
+                <a href="login.html" class="nav-link text-danger"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="dash-content">
+        <!-- Section: Dashboard (Default) -->
+        <section id="dashboard-section" class="active-section">
+            <header class="d-flex justify-content-between align-items-center mb-5">
+                <div>
+                    <h2 class="fw-bold mb-1">Global Platform Overview</h2>
+                    <p class="text-muted mb-0">High-level metrics for the federated ICU network.</p>
+                </div>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-outline-teal px-4" data-bs-toggle="modal" data-bs-target="#newHospitalModal">
+                        <i class="fa-solid fa-plus me-2"></i> Create Hospital Account
+                    </button>
+                </div>
+            </header>
+
+            <div class="row g-4 mb-5 platform-stats">
+                <div class="col-md-4">
+                    <div class="bg-white p-4 rounded-4 shadow-sm border-start border-teal border-4 h-100">
+                        <p class="text-muted small fw-bold mb-1">HOSPITAL NODES</p>
+                        <h3 id="activeNodesCount" class="fw-bold mb-0">124</h3>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-white p-4 rounded-4 shadow-sm border-start border-primary border-4 h-100">
+                        <p class="text-muted small fw-bold mb-1">GLOBAL ACCURACY</p>
+                        <h3 class="fw-bold mb-0">94.2%</h3>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="bg-white p-4 rounded-4 shadow-sm border-start border-warning border-4 h-100">
+                        <p class="text-muted small fw-bold mb-1">FEDERATED TRENDS</p>
+                        <h3 class="fw-bold mb-0">+1.2% <small class="fs-6 opacity-50">v/s last cycle</small></h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-4 shadow-sm mb-4">
+                <h5 class="fw-bold mb-4">Global Network Health</h5>
+                <div style="height: 300px;">
+                    <canvas id="networkHealthChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Hospital Networks -->
+        <section id="hospitals-section" class="d-none">
+            <header class="mb-5">
+                <h2 class="fw-bold mb-1">Hospital Network Management</h2>
+                <p class="text-muted mb-0">Configure node permissions and monitor institutional login activities.</p>
+            </header>
+            
+            <div class="bg-white p-4 rounded-4 shadow-sm">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle" id="hospitalTable">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Institution</th>
+                                <th>Admin</th>
+                                <th>Last Login</th>
+                                <th>Permissions</th>
+                                <th>Status</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated by script.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Global Model Training -->
+        <section id="training-section" class="d-none">
+            <header class="mb-5">
+                <h2 class="fw-bold mb-1">Global Model Training</h2>
+                <p class="text-muted mb-0">Benchmarking federated algorithms across the clinical network.</p>
+            </header>
+
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="bg-white p-5 rounded-4 shadow-sm border border-light h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-5">
+                            <h5 class="fw-bold mb-0">Federated Pipeline Status</h5>
+                            <span class="badge bg-teal-subtle text-teal px-3" id="pipelineStatus">READY</span>
+                        </div>
+                        
+                        <!-- Training Stepper -->
+                        <div class="stepper-wrapper">
+                            <div class="stepper-step" id="step-upload">
+                                <div class="stepper-circle"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                                <div class="stepper-label">Data Upload</div>
+                            </div>
+                            <div class="stepper-step" id="step-cleaning">
+                                <div class="stepper-circle"><i class="fa-solid fa-broom"></i></div>
+                                <div class="stepper-label">Data Cleaning</div>
+                            </div>
+                            <div class="stepper-step" id="step-fitting">
+                                <div class="stepper-circle"><i class="fa-solid fa-gears"></i></div>
+                                <div class="stepper-label">Model Fitting</div>
+                            </div>
+                            <div class="stepper-step" id="step-training">
+                                <div class="stepper-circle"><i class="fa-solid fa-brain"></i></div>
+                                <div class="stepper-label">Global Training</div>
+                            </div>
+                        </div>
+
+                        <div id="step-details" class="alert bg-light border text-center small text-muted p-3 mt-4">
+                            System Idle. Waiting to initiate global federated cycle.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="bg-white p-4 rounded-4 shadow-sm border border-teal h-100">
+                        <h6 class="fw-bold mb-3 text-teal">Training Controls</h6>
+                        <p class="small text-muted mb-4">Select the algorithms to include in the next Global Model sync.</p>
+                        
+                        <div class="mb-4" id="algo-toggles">
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" role="switch" id="toggle-SVM" checked onclick="toggleAlgo('SVM')">
+                                <label class="form-check-label small" for="toggle-SVM">Support Vector Machine (SVM)</label>
+                            </div>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" role="switch" id="toggle-Lin-Reg" checked onclick="toggleAlgo('Lin Reg')">
+                                <label class="form-check-label small" for="toggle-Lin-Reg">Linear Regression</label>
+                            </div>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" role="switch" id="toggle-SGD" checked onclick="toggleAlgo('SGD')">
+                                <label class="form-check-label small" for="toggle-SGD">Stochastic Gradient Descent</label>
+                            </div>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" role="switch" id="toggle-Radom-Forest" checked onclick="toggleAlgo('Radom Forest')">
+                                <label class="form-check-label small" for="toggle-Radom-Forest">Random Forest</label>
+                            </div>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" role="switch" id="toggle-MLP" checked onclick="toggleAlgo('MLP')">
+                                <label class="form-check-label small" for="toggle-MLP">Multi-Layer Perceptron (MLP)</label>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-teal-primary w-100 mb-3" id="globalSyncBtn">Run Global Training</button>
+                        <hr>
+                        <p class="x-small text-muted mb-0"><b>Security Protocol:</b><br>Encryption-based weight aggregation enabled for all selected nodes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Analytics -->
+        <section id="analytics-section" class="d-none">
+            <header class="mb-5">
+                <h2 class="fw-bold mb-1">System-Wide Analytics</h2>
+                <p class="text-muted mb-0">Model improvement trends and institutional convergence metrics.</p>
+            </header>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="bg-white p-4 rounded-4 shadow-sm">
+                        <h5 class="fw-bold mb-4">Model Improvement Trend</h5>
+                        <div style="height: 300px;">
+                            <canvas id="convergenceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="bg-white p-4 rounded-4 shadow-sm">
+                        <h5 class="fw-bold mb-4">Institutional Accuracy Dist.</h5>
+                        <div style="height: 300px;">
+                            <canvas id="accuracyDistChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Settings -->
+        <section id="settings-section" class="d-none">
+            <header class="mb-5">
+                <h2 class="fw-bold mb-1">System Settings</h2>
+                <p class="text-muted mb-0">Manage platform profile and institutional communications.</p>
+            </header>
+            
+            <div class="row g-4">
+                <!-- User Profile Card -->
+                <div class="col-lg-6">
+                    <div class="bg-white p-5 rounded-4 shadow-sm h-100">
+                        <h5 class="fw-bold mb-4">User Profile</h5>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold">ADMIN NAME</label>
+                            <input type="text" class="form-control" value="Platform Master Admin" readonly>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold">EMAIL</label>
+                            <input type="email" class="form-control" value="admin@icupredict.com" readonly>
+                        </div>
+                        <button class="btn btn-outline-teal">Change Password</button>
+                    </div>
+                </div>
+
+                <!-- Federated Governance Card -->
+                <div class="col-lg-6">
+                    <div class="bg-white p-5 rounded-4 shadow-sm h-100">
+                        <h5 class="fw-bold mb-4">Federated Governance</h5>
+                        
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold">GLOBAL SYNC FREQUENCY</label>
+                            <select class="form-select" id="syncFrequency">
+                                <option value="12">Every 12 Hours</option>
+                                <option value="24" selected>Every 24 Hours (Recommended)</option>
+                                <option value="48">Every 48 Hours</option>
+                                <option value="168">Weekly</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold">PRIVACY ENFORCEMENT</label>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" role="switch" id="dpToggle" checked>
+                                <label class="form-check-label small" for="dpToggle">Enable Differential Privacy (ε=1.0)</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="nodeAlertToggle" checked>
+                                <label class="form-check-label small" for="nodeAlertToggle">Notify on Node Disconnection</label>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h6 class="fw-bold mb-3 small">INSTITUTIONAL DEFAULTS</h6>
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-muted">NEW NODE PERMISSION LEVEL</label>
+                            <select class="form-select form-select-sm" id="defaultPerm">
+                                <option value="1">Level 1 (View Only)</option>
+                                <option value="2">Level 2 (Read-only Sync)</option>
+                                <option value="3">Level 3 (Limited Admin)</option>
+                                <option value="4" selected>Level 4 (Full Access)</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-teal-primary w-100 py-3" id="saveSettingsBtn">Save Platform Settings</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Create Hospital Modal -->
+    <div class="modal fade" id="newHospitalModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="fw-bold">Register New Hospital Node</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="createHospitalForm">
+                        <p class="text-muted small mb-4">Provision a new institutional node for the federated network.</p>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">INSTITUTION NAME</label>
+                            <input type="text" id="newHospName" class="form-control" placeholder="e.g. Johns Hopkins" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">HOSPITAL ADMIN EMAIL</label>
+                            <input type="email" id="newHospEmail" class="form-control" placeholder="admin@hospital.org" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">PHYSICAL ADDRESS</label>
+                            <textarea id="newHospAddress" class="form-control" rows="2" placeholder="Institutional Headquarters"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-teal-primary w-100 py-3 rounded-3" id="submitNewHosp">Generate & Send Credentials</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hospital Credentials Modal -->
+    <div class="modal fade" id="hospitalCredentialsModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow">
+                <div class="modal-header border-0 bg-teal text-white rounded-top-4">
+                    <h5 class="fw-bold mb-0"><i class="fa-solid fa-key me-2"></i> Node Credentials Generated</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <p class="text-muted small mb-4">Institutional node provisioned successfully. Share these secure credentials with the hospital administrator.</p>
+                    
+                    <div class="bg-light p-3 rounded-4 mb-3 border text-start">
+                        <label class="x-small fw-bold text-muted mb-1">USERNAME</label>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <code class="fw-bold fs-5 text-dark" id="displayHospUser">hospital_admin_12</code>
+                            <button class="btn btn-sm btn-outline-secondary border-0"><i class="fa-regular fa-copy"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="bg-light p-3 rounded-4 mb-4 border text-start">
+                        <label class="x-small fw-bold text-muted mb-1">TEMPORARY PASSWORD</label>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <code class="fw-bold fs-5 text-dark" id="displayHospPass">pass7821</code>
+                            <button class="btn btn-sm btn-outline-secondary border-0"><i class="fa-regular fa-copy"></i></button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-teal-primary w-100 py-3 rounded-3" data-bs-dismiss="modal">Close & Return to Dashboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js?v=4.1"></script>
+</body>
+</html>
